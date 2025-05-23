@@ -37,6 +37,8 @@ jobs:
             # python scripts/train.py
             rm -r outputs/checkpoint*
             zip -r outputs.zip outputs
+            source /venv/main/bin/activate
+            cd /workspace/llm-finetune-mlops
             aws s3 cp outputs.zip s3://zett-vast-ai/outputs.zip
 
       - name: SSH to EC2 and deploy
