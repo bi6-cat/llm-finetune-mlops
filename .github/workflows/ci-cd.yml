@@ -55,5 +55,6 @@ jobs:
             rm outputs.zip
             source /home/ubuntu/.venv/bin/activate
             cd /home/ubuntu/project/llm-finetune-mlops
-            python scripts/gradio_app.py
+            nohup python gradio_app.py > gradio.log 2>&1 &
+
 
