@@ -26,6 +26,8 @@ jobs:
           username: ${{ vars.VASTAI_USER }}
           port: ${{ vars.VASTAI_PORT }}
           key: ${{ secrets.VASTAI_SSH_KEY }}
+          timeout: 1800
+          command_timeout: 1800 
           script: |
             cd /workspace/llm-finetune-mlops/
             git pull
