@@ -34,7 +34,7 @@ jobs:
             source .venv/bin/activate
             python -m pip install --upgrade pip
             pip install -r requirements.txt
-            python scripts/train.py
+            # python scripts/train.py
             rm -r outputs/checkpoint*
             zip -r outputs.zip outputs
             aws s3 cp outputs.zip s3://zett-vast-ai/outputs.zip
