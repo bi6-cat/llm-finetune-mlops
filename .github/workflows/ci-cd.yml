@@ -1,0 +1,61 @@
+name: MLOps Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  train-and-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      VASTAI_PORT: ${{ vars.VASTAI_PORT }}
+      VASTAI_IP: ${{ vars.VASTAI_IP }}
+      VASTAI_USER: ${{ vars.VASTAI_USER }}
+      VASTAI_SSH_KEY: ${{ secrets.VASTAI_SSH_KEY }}
+      EC2_IP: ${{ vars.EC2_IP }}
+      EC2_USER: ${{ vars.EC2_USER }}
+      EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: SSH to VAST.AI and train
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ env.VASTAI_IP }}
+          username: ${{ env.VASTAI_USER }}
+          port: ${{ env.VASTAI_PORT }}
+          key: ${{ env.VASTAI_SSH_KEY }}
+          script: |
+            cd /workspace/llm-finetune-mlops/
+            git pull
+            source .venv/bin/activate
+            python scripts/train.py
+            rm -r outputs/checkpoint*
+            zip -r outputs.zip outputs
+            aws s3 cp outputs.zip s3://zett-vast-ai/outputs.zip
+
+      - name: SSH to EC2 and deploy
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ env.EC2_IP }}
+          username: ${{ env.EC2_USER }}
+          key: ${{ env.EC2_SSH_KEY }}
+          script: |
+            aws s3 cp s3://zett-vast-ai/outputs.zip /home/ubuntu/project/llm-finetune-mlops/outputs.zip
+            cd /home/ubuntu/project/llm-finetune-mlops
+            git pull
+            unzip -o outputs.zip
+            rm outputs.zip
+            source /home/ubuntu/.venv/bin/activate
+            cd /home/ubuntu/project/llm-finetune-mlops
+            python scripts/gradio_app.py
+
