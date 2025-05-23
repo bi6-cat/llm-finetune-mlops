@@ -7,6 +7,7 @@ on:
 
 jobs:
   train-and-deploy:
+    environment: VASTAI
     runs-on: ubuntu-latest
 
     steps:
