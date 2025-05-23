@@ -34,7 +34,7 @@ jobs:
             zip -r outputs.zip outputs
             source /venv/main/bin/activate
             cd /workspace/llm-finetune-mlops
-            aws s3 cp outputs.zip s3://zett-vast-ai/outputs.zip
+            # aws s3 cp outputs.zip s3://zett-vast-ai/outputs.zip
 
       - name: SSH to EC2 and deploy
         uses: appleboy/ssh-action@v0.1.7
@@ -50,6 +50,7 @@ jobs:
             rm outputs.zip
             source /home/ubuntu/.venv/bin/activate
             cd /home/ubuntu/project/llm-finetune-mlops
+            pkill -f gradio_app.py || true
             nohup python gradio_app.py > gradio.log 2>&1 &
 
 
