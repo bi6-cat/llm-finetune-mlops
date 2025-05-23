@@ -13,6 +13,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Debug SSH key length
+        run: echo "${{ secrets.VASTAI_SSH_KEY }}" | wc -c
+
       - name: SSH to VAST.AI and train
         uses: appleboy/ssh-action@v0.1.7
         with:
