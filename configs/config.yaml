@@ -1,0 +1,6 @@
+model_name: "distilbert-base-uncased"
+dataset_name: "imdb"
+epochs: 3
+batch_size: 16
+learning_rate: 5e-5
+output_dir: "outputs/"
