@@ -14,11 +14,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Debug SSH key snippet
-        run: |
-            echo "${{ secrets.VASTAI_SSH_KEY }}" | head -c 50
-
-
       - name: SSH to VAST.AI and train
         uses: appleboy/ssh-action@v0.1.7
         with:
@@ -26,8 +21,8 @@ jobs:
           username: ${{ vars.VASTAI_USER }}
           port: ${{ vars.VASTAI_PORT }}
           key: ${{ secrets.VASTAI_SSH_KEY }}
-          timeout: 3600s
-          command_timeout: 3600s
+          timeout: 1800s
+          command_timeout: 1800s
           script: |
             cd /workspace/llm-finetune-mlops/
             git pull
@@ -39,7 +34,7 @@ jobs:
             zip -r outputs.zip outputs
             source /venv/main/bin/activate
             cd /workspace/llm-finetune-mlops
-            pv outputs.zip | aws s3 cp - s3://zett-vast-ai/outputs.zip
+            aws s3 cp outputs.zip s3://zett-vast-ai/outputs.zip
 
       - name: SSH to EC2 and deploy
         uses: appleboy/ssh-action@v0.1.7
@@ -48,8 +43,8 @@ jobs:
           username: ${{ vars.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            aws s3 cp s3://zett-vast-ai/outputs.zip /home/ubuntu/project/llm-finetune-mlops/outputs.zip
             cd /home/ubuntu/project/llm-finetune-mlops
-            aws s3 cp s3://zett-vast-ai/outputs.zip - | pv > outputs.zip
             git pull
             unzip -o outputs.zip
             rm outputs.zip
