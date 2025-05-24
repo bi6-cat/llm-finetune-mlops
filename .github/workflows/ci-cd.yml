@@ -63,7 +63,6 @@ jobs:
               echo "No Gradio app process found."
             fi
 
-            echo "Old Gradio app process killed, if it was running."
-            bash -lc "source /home/ubuntu/.venv/bin/activate && nohup python scripts/gradio_app.py > gradio.log 2>&1 & disown"
+            nohup python scripts/gradio_app.py > gradio.log 2>&1
             echo "Gradio app started successfully."
 
