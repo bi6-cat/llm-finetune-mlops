@@ -50,7 +50,7 @@ jobs:
             # git pull
             # unzip -o outputs.zip
             echo "Unzipped outputs.zip successfully."
-            pkill -f gradio_app.py || true
+            # pkill -f gradio_app.py || true
             echo "Old Gradio app process killed, if it was running."
             bash -lc "source /home/ubuntu/.venv/bin/activate && nohup python scripts/gradio_app.py > gradio.log 2>&1 & disown"
             echo "Gradio app started successfully."
