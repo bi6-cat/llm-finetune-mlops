@@ -55,7 +55,13 @@ jobs:
             echo "Unzipped outputs.zip successfully."
             sudo apt-get install -y procps
 
-            kill -9 $(ps -ef | grep '[g]radio_app.py' | awk '{print $2}') || true
+            pids=$(ps -ef | grep gradio_app.py | grep -v grep | awk '{print $2}')
+            if [ -n "$pids" ]; then
+              kill -9 $pids
+              echo "Killed Gradio app processes."
+            else
+              echo "No Gradio app process found."
+            fi
 
             echo "Old Gradio app process killed, if it was running."
             bash -lc "source /home/ubuntu/.venv/bin/activate && nohup python scripts/gradio_app.py > gradio.log 2>&1 & disown"
