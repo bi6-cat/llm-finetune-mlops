@@ -56,12 +56,13 @@ jobs:
             sudo apt-get install -y procps
 
             # Kiểm tra và kill tiến trình Gradio an toàn
-            if pgrep -f gradio_app.py > /dev/null; then
-              pkill -f gradio_app.py
-              echo "Old Gradio app process killed."
+            if pgrep -f '[g]radio_app.py' > /dev/null; then
+              pkill -f '[g]radio_app.py'
+              echo "Old Gradio app killed."
             else
               echo "No Gradio app process found."
             fi
+
 
             echo "Old Gradio app process killed, if it was running."
             bash -lc "source /home/ubuntu/.venv/bin/activate && nohup python scripts/gradio_app.py > gradio.log 2>&1 & disown"
