@@ -63,6 +63,6 @@ jobs:
               echo "No Gradio app process found."
             fi
 
-            nohup python scripts/gradio_app.py > gradio.log 2>&1
+            nohup python gradio_app.py > gradio.log 2>&1
             echo "Gradio app started successfully."
 
