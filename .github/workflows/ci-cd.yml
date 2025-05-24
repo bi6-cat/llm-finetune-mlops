@@ -57,6 +57,7 @@ jobs:
 
             # Kiểm tra và kill tiến trình Gradio an toàn
             if pgrep -f '[g]radio_app.py' > /dev/null; then
+              echo "Killing old Gradio app process..."
               pkill -f '[g]radio_app.py'
               echo "Old Gradio app killed."
             else
