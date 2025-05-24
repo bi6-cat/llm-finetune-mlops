@@ -55,13 +55,12 @@ jobs:
             echo "Unzipped outputs.zip successfully."
             sudo apt-get install -y procps
 
-            # Kiểm tra và kill tiến trình Gradio an toàn
-            if pgrep -f '[g]radio_app.py' > /dev/null; then
-              echo "Killing old Gradio app process..."
-              pkill -f '[g]radio_app.py'
+            pid=$(pgrep -f gradio_app.py)
+            if [ -n "$pid" ]; then
+              kill $pid
               echo "Old Gradio app killed."
             else
-              echo "No Gradio app process found."
+              echo "No Gradio app running."
             fi
 
 
