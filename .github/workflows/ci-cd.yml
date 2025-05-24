@@ -45,7 +45,7 @@ jobs:
           timeout: 1800s
           command_timeout: 1800s
           script: |
-            aws s3 cp s3://zett-vast-ai/outputs.zip /home/ubuntu/project/llm-finetune-mlops/outputs.zip
+            # aws s3 cp s3://zett-vast-ai/outputs.zip /home/ubuntu/project/llm-finetune-mlops/outputs.zip
             cd /home/ubuntu/project/llm-finetune-mlops
             # git pull
             # unzip -o outputs.zip
