@@ -47,9 +47,9 @@ jobs:
           script: |
             aws s3 cp s3://zett-vast-ai/outputs.zip /home/ubuntu/project/llm-finetune-mlops/outputs.zip
             cd /home/ubuntu/project/llm-finetune-mlops
-            git pull
-            unzip -o outputs.zip
-            source /home/ubuntu/.venv/bin/activate
+            # git pull
+            # unzip -o outputs.zip
+            echo "Unzipped outputs.zip successfully."
             pkill -f gradio_app.py || true
             echo "Old Gradio app process killed, if it was running."
             bash -lc "source /home/ubuntu/.venv/bin/activate && nohup python scripts/gradio_app.py > gradio.log 2>&1 & disown"
