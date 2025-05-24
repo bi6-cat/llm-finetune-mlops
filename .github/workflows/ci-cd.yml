@@ -36,6 +36,8 @@ jobs:
       #       cd /workspace/llm-finetune-mlops
       #       aws s3 cp outputs.zip s3://zett-vast-ai/outputs.zip
 
+
+
       - name: SSH to EC2 and deploy
         uses: appleboy/ssh-action@v0.1.7
         with:
@@ -45,14 +47,22 @@ jobs:
           timeout: 1800s
           command_timeout: 1800s
           script: |
+            echo "Starting deployment on EC2 instance..."
             # aws s3 cp s3://zett-vast-ai/outputs.zip /home/ubuntu/project/llm-finetune-mlops/outputs.zip
             cd /home/ubuntu/project/llm-finetune-mlops
             # git pull
             # unzip -o outputs.zip
             echo "Unzipped outputs.zip successfully."
             sudo apt-get install -y procps
-            pkill -f gradio_app.py
-            true # Ignore error if no process is found
+
+            # Kiểm tra và kill tiến trình Gradio an toàn
+            if pgrep -f gradio_app.py > /dev/null; then
+              pkill -f gradio_app.py
+              echo "Old Gradio app process killed."
+            else
+              echo "No Gradio app process found."
+            fi
+
             echo "Old Gradio app process killed, if it was running."
             bash -lc "source /home/ubuntu/.venv/bin/activate && nohup python scripts/gradio_app.py > gradio.log 2>&1 & disown"
             echo "Gradio app started successfully."
