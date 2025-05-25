@@ -14,27 +14,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # - name: SSH to VAST.AI and train
-      #   uses: appleboy/ssh-action@v0.1.7
-      #   with:
-      #     host: ${{ vars.VASTAI_IP }}
-      #     username: ${{ vars.VASTAI_USER }}
-      #     port: ${{ vars.VASTAI_PORT }}
-      #     key: ${{ secrets.VASTAI_SSH_KEY }}
-      #     timeout: 1800s
-      #     command_timeout: 1800s
-      #     script: |
-      #       cd /workspace/llm-finetune-mlops/
-      #       git pull
-      #       source .venv/bin/activate
-      #       python -m pip install --upgrade pip
-      #       pip install -r requirements.txt
-      #       # python scripts/train.py
-      #       rm -r outputs/checkpoint*
-      #       zip -r outputs.zip outputs
-      #       source /venv/main/bin/activate
-      #       cd /workspace/llm-finetune-mlops
-      #       aws s3 cp outputs.zip s3://zett-vast-ai/outputs.zip
+      - name: SSH to VAST.AI and train
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ vars.VASTAI_IP_2 }}
+          username: ${{ vars.VASTAI_USER }}
+          port: ${{ vars.VASTAI_PORT_2 }}
+          key: ${{ secrets.VASTAI_SSH_KEY }}
+          timeout: 1800s
+          command_timeout: 1800s
+          script: |
+            cd /workspace/llm-finetune-mlops/
+            git pull
+            source .venv/bin/activate
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+            python scripts/train.py
+            rm -r outputs/checkpoint*
+            zip -r outputs.zip outputs
+            source /venv/main/bin/activate
+            cd /workspace/llm-finetune-mlops
+            aws s3 cp outputs.zip s3://zett-vast-ai/outputs.zip
 
 
 
@@ -48,10 +48,10 @@ jobs:
           command_timeout: 1800s
           script: |
             echo "Starting deployment on EC2 instance..."
-            # aws s3 cp s3://zett-vast-ai/outputs.zip /home/ubuntu/project/llm-finetune-mlops/outputs.zip
+            aws s3 cp s3://zett-vast-ai/outputs.zip /home/ubuntu/project/llm-finetune-mlops/outputs.zip
             cd /home/ubuntu/project/llm-finetune-mlops
-            # git pull
-            # unzip -o outputs.zip
+            git pull
+            unzip -o outputs.zip
             echo "Unzipped outputs.zip successfully."
             sudo apt-get install -y procps
 
