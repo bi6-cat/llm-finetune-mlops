@@ -61,7 +61,7 @@ jobs:
               echo "No Gradio app process found."
             fi
             echo "Installing dependencies..."
-            source /home/ubuntu/.venv/bin/activate
+            # source /home/ubuntu/.venv/bin/activate
             nohup python3 gradio_app.py > gradio.log 2>&1 &
             disown
             echo "Gradio app started successfully."
