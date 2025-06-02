@@ -50,7 +50,7 @@ jobs:
             cd /home/ubuntu/project/llm-finetune-mlops
             git pull
             sudo apt install python3
-            sudo apt install python3-pip
+            sudo apt install python3-pip -y
             pip install -r deploy-requirements.txt
             unzip -o outputs.zip
             echo "Unzipped outputs.zip successfully."
