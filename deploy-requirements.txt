@@ -1,2 +1,2 @@
 gradio
-torch
+torch --no-cache-dir
