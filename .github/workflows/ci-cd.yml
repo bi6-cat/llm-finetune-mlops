@@ -17,9 +17,9 @@ jobs:
       - name: SSH to VAST.AI and train
         uses: appleboy/ssh-action@v0.1.7
         with:
-          host: ${{ vars.VASTAI_IP_2 }}
+          host: ${{ vars.VASTAI_IP }}
           username: ${{ vars.VASTAI_USER }}
-          port: ${{ vars.VASTAI_PORT_2 }}
+          port: ${{ vars.VASTAI_PORT }}
           key: ${{ secrets.VASTAI_SSH_KEY }}
           timeout: 1800s
           command_timeout: 1800s
