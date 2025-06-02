@@ -49,7 +49,6 @@ jobs:
             aws s3 cp s3://zett-vast-ai/outputs.zip /home/ubuntu/project/llm-finetune-mlops/outputs.zip
             cd /home/ubuntu/project/llm-finetune-mlops
             git pull
-            sudo apt install python3
             sudo apt install python3-pip -y
             pip install -r deploy-requirements.txt
             unzip -o outputs.zip
