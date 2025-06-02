@@ -28,7 +28,7 @@ jobs:
             git pull
             source .venv/bin/activate
             python -m pip install --upgrade pip
-            pip install -r requirements.txt
+            pip install -r gpu-requirements.txt
             # python scripts/train.py
             rm -r outputs/checkpoint*
             zip -r outputs.zip outputs
@@ -49,6 +49,8 @@ jobs:
             aws s3 cp s3://zett-vast-ai/outputs.zip /home/ubuntu/project/llm-finetune-mlops/outputs.zip
             cd /home/ubuntu/project/llm-finetune-mlops
             git pull
+            python -m pip install --upgrade pip
+            pip install -r deploy-requirements.txt
             unzip -o outputs.zip
             echo "Unzipped outputs.zip successfully."
             sudo apt-get install -y procps
